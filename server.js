@@ -1,11 +1,20 @@
 //link de conexão
 // mongodb+srv://ivanildojua1995:newUserInBD2025@cluster0.so175.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
-
+require('dotenv').config()
 
 const express = require("express");
 
 const app = express();
+
+const mongoose = require('mongoose');
+mongoose.connect(process.env.CONNECTIONSTRING)
+.then(()=>{
+  app.emit('Running');
+})
+.catch(e=>{
+  console.log('>>>>>> ',e);
+})
 
 const path = require("path");
 
@@ -37,6 +46,11 @@ app.use(routes);
 // })
 
 //Ouvindo a porta para poder responder
-app.listen(3001, () => {
-  console.log("Server turn on ...");
-});
+
+app.on("Running",()=>{
+  console.log('sinal recebido ...')
+  app.listen(3001, () => {
+    console.log("Server turn on ...");
+  });
+
+})
