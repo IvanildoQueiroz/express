@@ -1,26 +1,24 @@
-//link de conexão
-// mongodb+srv://ivanildojua1995:newUserInBD2025@cluster0.so175.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-
-require('dotenv').config()
+require("dotenv").config();
 
 const express = require("express");
 
 const app = express();
 
-const mongoose = require('mongoose');
-mongoose.connect(process.env.CONNECTIONSTRING)
-.then(()=>{
-  app.emit('Running');
-})
-.catch(e=>{
-  console.log('>>>>>> ',e);
-})
+const mongoose = require("mongoose");
+mongoose
+  .connect(process.env.CONNECTIONSTRING)
+  .then(() => {
+    app.emit("Running");
+  })
+  .catch((e) => {
+    console.log(">>>>>> ", e);
+  });
 
 const path = require("path");
 
 const routes = require("./src/routes/Routes");
 
-const Middleware = require('./src/midlleWare/middleware');
+const Middleware = require("./src/midlleWare/middleware");
 
 //CRUD - CREATE (post), READ (get), PUT (update), DELETE
 
@@ -28,12 +26,12 @@ const Middleware = require('./src/midlleWare/middleware');
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static(path.resolve(__dirname,'public')))
+app.use(express.static(path.resolve(__dirname, "public")));
 
 app.set("views", path.resolve(__dirname, "src", "views"));
-app.set('view engine','ejs');
+app.set("view engine", "ejs");
 
-app.use(Middleware.MiddlewareGlobal);;
+app.use(Middleware.MiddlewareGlobal);
 
 app.use(routes);
 
@@ -47,10 +45,9 @@ app.use(routes);
 
 //Ouvindo a porta para poder responder
 
-app.on("Running",()=>{
-  console.log('sinal recebido ...')
-  app.listen(3001, () => {
+app.on("Running", () => {
+  console.log("sinal recebido ...");
+  app.listen(3000, () => {
     console.log("Server turn on ...");
   });
-
-})
+});
