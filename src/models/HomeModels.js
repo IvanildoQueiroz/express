@@ -7,4 +7,11 @@ const HomeSchema = new mongoose.Schema({
 
 const HomeModel = mongoose.model('Home',HomeSchema);
 
-module.exports = HomeModel;
+// module.exports = HomeModel;
+
+class Home {
+    constructor(){
+        
+    }
+}
+module.exports = home;

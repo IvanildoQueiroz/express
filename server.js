@@ -14,6 +14,10 @@ mongoose
     console.log(">>>>>> ", e);
   });
 
+const session = require("express-session"); /// salva a sessão na memoria
+const MongoStore = require('connect-mongo'); // 
+const flash = require('connect-flash');
+
 const path = require("path");
 
 const routes = require("./src/routes/Routes");
@@ -27,6 +31,21 @@ const Middleware = require("./src/midlleWare/middleware");
 app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static(path.resolve(__dirname, "public")));
+
+const sessionOptions = session({
+    secret:'teste of connection',
+    resave: false,
+    store : MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }), //store : onde vai salvar a sessão
+    saveUninitialized: false,
+    cookie:{
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly:true
+    }
+})
+
+app.use(sessionOptions);
+app.use(flash())
+
 
 app.set("views", path.resolve(__dirname, "src", "views"));
 app.set("view engine", "ejs");
